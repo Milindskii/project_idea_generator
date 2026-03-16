@@ -65,7 +65,7 @@ export default function AnalyzingPage() {
       }
 
       try {
-        const response = await fetch('http://localhost:8000/api/analyze', {
+        const response = await fetch('http://localhost:8000/api/full_pipeline', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(submissionData),
