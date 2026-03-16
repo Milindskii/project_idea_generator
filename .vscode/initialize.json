@@ -1,0 +1,66 @@
+{
+  "version": "0.1.0",
+  "enable": true,
+  "groups": [
+    {
+      "order": 0,
+      "id": "git",
+      "commands": [
+        {
+          "id": "git-init",
+          "command": "git init -b main",
+          "type": "runOnce",
+          "env": "backend",
+          "finished": true,
+          "enable": true
+        },
+        {
+          "id": "git-config-user.name",
+          "command": "git config user.name {username}",
+          "type": "runOnce",
+          "env": "backend",
+          "finished": true,
+          "enable": true
+        },
+        {
+          "id": "git-config-user.email",
+          "command": "git config user.email {username}@localhost.local",
+          "type": "runOnce",
+          "env": "backend",
+          "finished": true,
+          "enable": true
+        },
+        {
+          "id": "git-add-gitignore",
+          "command": "git add .gitignore",
+          "type": "runOnce",
+          "env": "backend",
+          "finished": true,
+          "enable": true
+        },
+        {
+          "id": "git-commit-initial",
+          "command": "git commit -m \"Initial commit\"",
+          "type": "runOnce",
+          "env": "backend",
+          "finished": true,
+          "enable": true
+        }
+      ]
+    },
+    {
+      "order": 1,
+      "id": "node",
+      "commands": [
+        {
+          "id": "pnpm-install",
+          "command": "pnpm install",
+          "type": "runOnce",
+          "env": "frontend",
+          "finished": true,
+          "enable": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "name": "nextjs-base-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "NEXT_DISABLE_ESLINT=1 NEXT_DISABLE_TYPECHECK=1 next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "oxlint",
+    "type-check": "tsc --noEmit",
+    "check-all": "npm run lint & npm run type-check & wait"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.4",
+    "framer-motion": "^12.36.0",
+    "lucide-react": "^0.577.0",
+    "next": "15.5.7",
+    "posthog-js": "^1.270.1",
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "oxlint": "^1.12.0",
+    "postcss": "^8",
+    "supabase": "2.34.3",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "unrs-resolver"
+    ],
+    "peerDependencyRules": {
+      "allowAny": [
+        "supabase"
+      ]
+    }
+  }
+}
