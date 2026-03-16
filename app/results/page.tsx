@@ -1,114 +1,34 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSearchParams, useRouter as useNextRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import AIThoughtsPanel from '@/components/AIThoughtsPanel';
 import ProjectCard from '@/components/ProjectCard';
-import { useUserInputs } from '@/context/UserInputContext';
-import { RefreshCw, RotateCcw, Sparkles, AlertCircle } from 'lucide-react';
-
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  techStack: string[];
-  difficulty: string;
-  matchScore: number;
-}
-
-interface BackendData {
-  analysis: string;
-  projects: Project[];
-}
+import { MOCK_RESULTS } from '@/data/mockResults';
+import { RefreshCw, RotateCcw, Sparkles } from 'lucide-react';
 
 export default function ResultsPage() {
-  const router = useNextRouter();
-  const { inputs } = useUserInputs();
-  const [data, setData] = useState<BackendData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const [isRegenerating, setIsRegenerating] = useState(false);
   const [regenerateKey, setRegenerateKey] = useState(0);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await fetch('http://localhost:8000/api/generate-ideas', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(inputs),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch project ideas');
-        }
-
-        const result = await response.json();
-        setData(result);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred');
-        console.error('Error fetching data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [inputs, regenerateKey]);
+  const shuffledProjects = [...MOCK_RESULTS.projects].sort(() =>
+    regenerateKey === 0 ? 0 : Math.random() - 0.5
+  );
 
   const handleRegenerate = () => {
-    setRegenerateKey((k) => k + 1);
+    setIsRegenerating(true);
+    setTimeout(() => {
+      setRegenerateKey((k) => k + 1);
+      setIsRegenerating(false);
+    }, 1200);
   };
 
   const handleStartOver = () => {
     router.push('/questions');
   };
-
-  if (loading && !data) {
-    return (
-      <div className="min-h-screen flex flex-col bg-paper">
-        <Navbar />
-        <main className="flex-grow flex flex-col items-center justify-center p-6 text-center">
-          <div className="bg-accent/10 p-4 rounded-2xl mb-6 animate-pulse">
-            <Sparkles className="w-8 h-8 text-accent grayscale" />
-          </div>
-          <h2 className="text-2xl font-serif text-primary mb-2">Analyzing Your Idea</h2>
-          <p className="text-primary/60 max-w-md">Our AI is processing your inputs to build a custom roadmap...</p>
-          <div className="mt-8 flex gap-2">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                className="w-2 h-2 rounded-full bg-accent"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-              />
-            ))}
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex flex-col bg-paper">
-        <Navbar />
-        <main className="flex-grow flex flex-col items-center justify-center p-6 text-center">
-          <div className="bg-red-50 to-red-100 p-4 rounded-2xl mb-6">
-            <AlertCircle className="w-8 h-8 text-red-500" />
-          </div>
-          <h2 className="text-2xl font-serif text-primary mb-2">Something went wrong</h2>
-          <p className="text-primary/60 max-w-md mb-8">{error}. Please make sure the backend server is running.</p>
-          <button onClick={() => setRegenerateKey(k => k + 1)} className="btn-primary">Try Again</button>
-        </main>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-paper pb-24">
@@ -138,15 +58,15 @@ export default function ResultsPage() {
           </motion.h1>
         </header>
 
-        {data && <AIThoughtsPanel text={data.analysis} />}
+        <AIThoughtsPanel text={MOCK_RESULTS.analysis} />
 
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-2xl font-serif text-primary">Recommended Project Ideas</h2>
           <div className="h-px flex-grow mx-6 bg-black/5 hidden md:block" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {data?.projects.map((project, index) => (
+        <div key={regenerateKey} className="grid md:grid-cols-3 gap-6 mb-16">
+          {shuffledProjects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
@@ -154,11 +74,11 @@ export default function ResultsPage() {
         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
           <button
             onClick={handleRegenerate}
-            disabled={loading}
+            disabled={isRegenerating}
             className="btn-primary flex items-center gap-2 min-w-[200px] justify-center"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            {loading ? 'Regenerating...' : 'Regenerate Ideas'}
+            <RefreshCw className={`w-4 h-4 ${isRegenerating ? 'animate-spin' : ''}`} />
+            {isRegenerating ? 'Regenerating...' : 'Regenerate Ideas'}
           </button>
           <button
             onClick={handleStartOver}
