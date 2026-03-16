@@ -2,9 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { ExternalLink, Zap } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface ProjectCardProps {
   project: {
+    id: number;
     title: string;
     description: string;
     techStack: string[];
@@ -15,6 +17,18 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, index }: ProjectCardProps) {
+  const router = useRouter();
+
+  const handleExplore = () => {
+    const params = new URLSearchParams({
+      title: project.title,
+      description: project.description,
+      difficulty: project.difficulty,
+      tech: project.techStack.join(', '),
+    });
+    router.push(`/explore/${project.id}?${params.toString()}`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -51,7 +65,10 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         ))}
       </div>
 
-      <button className="w-full py-3 rounded-xl border border-primary/10 font-medium text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all">
+      <button
+        onClick={handleExplore}
+        className="w-full py-3 rounded-xl border border-primary/10 font-medium text-sm flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all"
+      >
         Explore This Idea <ExternalLink className="w-4 h-4" />
       </button>
     </motion.div>

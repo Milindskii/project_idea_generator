@@ -1,6 +1,7 @@
 'use client';
 
 import Navbar from "@/components/Navbar";
+import TestimonialFlipper from "@/components/TestimonialFlipper";
 import { motion } from "framer-motion";
 import { ArrowRight, Brain, Code, Rocket, Users, Sparkles } from "lucide-react";
 import Link from "next/link";
@@ -32,7 +33,7 @@ export default function Home() {
               <Link href="/questions" className="btn-primary inline-flex items-center gap-3 text-lg px-10 py-4">
                 Find My Project Idea <ArrowRight className="w-5 h-5" />
               </Link>
-              <span className="text-sm text-primary/40 font-medium">Free for students & hackers</span>
+              <span className="text-sm text-primary/40 font-medium">Free for students &amp; builders</span>
             </div>
           </motion.div>
         </section>
@@ -48,7 +49,7 @@ export default function Home() {
               <div className="text-8xl font-serif text-black/5 hidden md:block">01—03</div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-16">
+<div className="grid md:grid-cols-3 gap-12 lg:gap-16 relative">
               {[
                 { step: "01", title: "Define Domain", desc: "Select your area of interest and current skill level to set the foundation." },
                 { step: "02", title: "Describe Vision", desc: "Tell us what you're thinking in your own words. No technical jargon required." },
@@ -56,16 +57,16 @@ export default function Home() {
               ].map((item, i) => (
                 <motion.div 
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.2 }}
-                  className="relative"
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
+                  className="relative group p-6 -m-6 rounded-2xl transition-all duration-300 hover:bg-white/40"
                 >
-                  <span className="text-6xl font-serif text-accent/20 absolute -top-10 -left-4 select-none">{item.step}</span>
-                  <div className="relative z-10">
-                    <h3 className="text-2xl font-bold mb-4 pt-4 border-t border-black/10">{item.title}</h3>
-                    <p className="text-primary/60 leading-relaxed">{item.desc}</p>
+                  <span className="text-8xl font-serif text-black/5 absolute -top-6 -left-2 select-none pointer-events-none transition-colors duration-500 group-hover:text-accent/10">{item.step}</span>
+                  <div className="relative z-10 pt-6">
+                    <h3 className="text-2xl font-bold mb-4 pt-4 border-t border-black/10 transition-colors duration-300 group-hover:border-accent/30">{item.title}</h3>
+                    <p className="text-primary/60 leading-relaxed group-hover:text-primary/80 transition-colors">{item.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -96,13 +97,7 @@ export default function Home() {
             </div>
             <div className="md:col-span-5">
               <div className="relative">
-                <div className="aspect-[4/5] bg-primary rounded-2xl overflow-hidden shadow-2xl rotate-2">
-                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay opacity-50" />
-                  <div className="absolute inset-0 p-10 flex flex-col justify-end text-white">
-                    <p className="text-2xl font-serif italic mb-4">"IdeaSpark helped me find a project that got me my first internship at a top tech firm."</p>
-                    <p className="font-bold uppercase tracking-widest text-xs opacity-60">— Sarah Chen, CS Junior</p>
-                  </div>
-                </div>
+                <TestimonialFlipper />
                 <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-accent rounded-2xl -rotate-6 -z-10 shadow-xl" />
               </div>
             </div>

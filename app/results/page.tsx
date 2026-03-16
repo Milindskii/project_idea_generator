@@ -12,12 +12,18 @@ import { RefreshCw, RotateCcw, Sparkles } from 'lucide-react';
 export default function ResultsPage() {
   const router = useRouter();
   const [isRegenerating, setIsRegenerating] = useState(false);
+  const [regenerateKey, setRegenerateKey] = useState(0);
+
+  const shuffledProjects = [...MOCK_RESULTS.projects].sort(() =>
+    regenerateKey === 0 ? 0 : Math.random() - 0.5
+  );
 
   const handleRegenerate = () => {
     setIsRegenerating(true);
     setTimeout(() => {
+      setRegenerateKey((k) => k + 1);
       setIsRegenerating(false);
-    }, 1500);
+    }, 1200);
   };
 
   const handleStartOver = () => {
@@ -59,8 +65,8 @@ export default function ResultsPage() {
           <div className="h-px flex-grow mx-6 bg-black/5 hidden md:block" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {MOCK_RESULTS.projects.map((project, index) => (
+        <div key={regenerateKey} className="grid md:grid-cols-3 gap-6 mb-16">
+          {shuffledProjects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>

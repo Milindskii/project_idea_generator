@@ -1,0 +1,8 @@
+.scroll-stack-container {
+  position: relative;
+}
+
+.scroll-stack-item {
+  position: sticky;
+  top: 0;
+}
