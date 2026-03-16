@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUserInputs } from '@/context/UserInputContext';
 import Navbar from '@/components/Navbar';
 import { Sparkles, CheckCircle2 } from 'lucide-react';
+import { MOCK_RESULTS } from '@/data/mockResults';
 
 const LOADING_STATEMENTS = [
   "Reading your inputs...",
@@ -30,16 +31,71 @@ export default function AnalyzingPage() {
       });
     }, 1500);
 
-    // Auto-navigate after ~9 seconds
-    const timeout = setTimeout(() => {
+    const startedAt = Date.now();
+
+    const runAnalysis = async () => {
+      const fallbackResult = {
+        analysis_text: MOCK_RESULTS.analysis,
+        projects: MOCK_RESULTS.projects.map((p) => ({
+          title: p.title,
+          description: p.description,
+          tech_stack: p.techStack,
+          difficulty: p.difficulty,
+          match_score: p.matchScore,
+        })),
+      };
+
+      let submissionData: any = null;
+      try {
+        const raw = localStorage.getItem('ideaspark_submission');
+        submissionData = raw ? JSON.parse(raw) : null;
+      } catch (err) {
+        console.error('Failed to read ideaspark_submission from localStorage', err);
+      }
+
+      if (!submissionData) {
+        submissionData = {
+          domain: inputs.domain,
+          skill_level: inputs.skillLevel,
+          time_available: inputs.timeframe,
+          goal: inputs.goal,
+          idea_description: inputs.ideaDescription,
+          submitted_at: new Date().toISOString(),
+        };
+      }
+
+      try {
+        const response = await fetch('http://localhost:8000/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(submissionData),
+        });
+        const result = await response.json();
+        localStorage.setItem('ideaspark_results', JSON.stringify(result));
+      } catch (err) {
+        console.error('Backend unreachable, falling back to mock results', err);
+        try {
+          localStorage.setItem('ideaspark_results', JSON.stringify(fallbackResult));
+        } catch (storeErr) {
+          console.error('Failed to write ideaspark_results to localStorage', storeErr);
+        }
+      }
+
+      const minWaitMs = 3500;
+      const elapsed = Date.now() - startedAt;
+      if (elapsed < minWaitMs) {
+        await new Promise((r) => setTimeout(r, minWaitMs - elapsed));
+      }
+
       router.push('/results');
-    }, 9000);
+    };
+
+    runAnalysis();
 
     return () => {
       clearInterval(interval);
-      clearTimeout(timeout);
     };
-  }, [router]);
+  }, [router, inputs]);
 
   return (
     <div className="min-h-screen flex flex-col bg-paper overflow-hidden">

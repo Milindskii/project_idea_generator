@@ -47,10 +47,25 @@ export default function QuestionsPage() {
   const { inputs, updateInput } = useUserInputs();
   const router = useRouter();
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < STEPS.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
+      const submissionData = {
+        domain: inputs.domain,
+        skill_level: inputs.skillLevel,
+        time_available: inputs.timeframe,
+        goal: inputs.goal,
+        idea_description: inputs.ideaDescription,
+        submitted_at: new Date().toISOString(),
+      };
+
+      try {
+        localStorage.setItem('ideaspark_submission', JSON.stringify(submissionData));
+      } catch (err) {
+        console.error('Failed to save submission locally', err);
+      }
+
       router.push('/analyzing');
     }
   };

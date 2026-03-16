@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
@@ -14,7 +14,39 @@ export default function ResultsPage() {
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [regenerateKey, setRegenerateKey] = useState(0);
 
-  const shuffledProjects = [...MOCK_RESULTS.projects].sort(() =>
+  const { analysisText, projects } = useMemo(() => {
+    const fallback = {
+      analysisText: MOCK_RESULTS.analysis,
+      projects: MOCK_RESULTS.projects,
+    };
+
+    try {
+      const raw = localStorage.getItem('ideaspark_results');
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw);
+
+      const analysisText = parsed?.analysis_text ?? MOCK_RESULTS.analysis;
+      const rawProjects = Array.isArray(parsed?.projects) ? parsed.projects : [];
+      const projects = rawProjects.map((p: any, idx: number) => ({
+        id: idx + 1,
+        title: p.title,
+        description: p.description,
+        techStack: Array.isArray(p.tech_stack) ? p.tech_stack : [],
+        difficulty: p.difficulty,
+        matchScore: p.match_score,
+      }));
+
+      return {
+        analysisText,
+        projects: projects.length ? projects : MOCK_RESULTS.projects,
+      };
+    } catch (err) {
+      console.error('Failed to read ideaspark_results from localStorage', err);
+      return fallback;
+    }
+  }, []);
+
+  const shuffledProjects = [...projects].sort(() =>
     regenerateKey === 0 ? 0 : Math.random() - 0.5
   );
 
@@ -58,7 +90,7 @@ export default function ResultsPage() {
           </motion.h1>
         </header>
 
-        <AIThoughtsPanel text={MOCK_RESULTS.analysis} />
+        <AIThoughtsPanel text={analysisText} />
 
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-2xl font-serif text-primary">Recommended Project Ideas</h2>
