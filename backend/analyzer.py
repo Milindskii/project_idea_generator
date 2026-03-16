@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from models import AnalysisResult, ProjectIdea, UserSubmission
+from models_simple import AnalysisResult, ProjectIdea, UserSubmission
 
 
 def _contains_any(haystack: str, needles: list[str]) -> bool:

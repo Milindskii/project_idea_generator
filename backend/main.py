@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from analyzer import analyze_submission
-from models import AnalysisResult, UserSubmission
+from models_simple import AnalysisResult, UserSubmission
 from storage import SUBMISSIONS_DIR, save_submission
 
 

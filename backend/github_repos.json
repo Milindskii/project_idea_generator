@@ -1,0 +1,72 @@
+[
+    {
+        "name": "ragflow",
+        "description": "RAGFlow is a leading open-source Retrieval-Augmented Generation (RAG) engine that fuses cutting-edge RAG with Agent capabilities to create a superior context layer for LLMs",
+        "stars": 75093,
+        "language": "Python",
+        "url": "https://github.com/infiniflow/ragflow"
+    },
+    {
+        "name": "graphrag",
+        "description": "A modular graph-based Retrieval-Augmented Generation (RAG) system",
+        "stars": 31508,
+        "language": "Python",
+        "url": "https://github.com/microsoft/graphrag"
+    },
+    {
+        "name": "LightRAG",
+        "description": "[EMNLP2025] \"LightRAG: Simple and Fast Retrieval-Augmented Generation\"",
+        "stars": 29424,
+        "language": "Python",
+        "url": "https://github.com/HKUDS/LightRAG"
+    },
+    {
+        "name": "RAG_Techniques",
+        "description": "This repository showcases various advanced techniques for Retrieval-Augmented Generation (RAG) systems. RAG systems combine information retrieval with generative models to provide accurate and contextually rich responses.",
+        "stars": 26002,
+        "language": "Jupyter Notebook",
+        "url": "https://github.com/NirDiamant/RAG_Techniques"
+    },
+    {
+        "name": "R2R",
+        "description": "SoTA production-ready AI retrieval system. Agentic Retrieval-Augmented Generation (RAG) with a RESTful API.",
+        "stars": 7727,
+        "language": "Python",
+        "url": "https://github.com/SciPhi-AI/R2R"
+    },
+    {
+        "name": "Verba",
+        "description": "Retrieval Augmented Generation (RAG) chatbot powered by Weaviate",
+        "stars": 7607,
+        "language": "Python",
+        "url": "https://github.com/weaviate/Verba"
+    },
+    {
+        "name": "azure-search-openai-demo",
+        "description": "A sample app for the Retrieval-Augmented Generation pattern running in Azure, using Azure AI Search for retrieval and Azure OpenAI large language models  to power ChatGPT-style and Q&A experiences.",
+        "stars": 7601,
+        "language": "Python",
+        "url": "https://github.com/Azure-Samples/azure-search-openai-demo"
+    },
+    {
+        "name": "AutoRAG",
+        "description": "AutoRAG: An Open-Source Framework for Retrieval-Augmented Generation (RAG) Evaluation & Optimization with AutoML-Style Automation",
+        "stars": 4623,
+        "language": "Python",
+        "url": "https://github.com/Marker-Inc-Korea/AutoRAG"
+    },
+    {
+        "name": "cognita",
+        "description": "RAG (Retrieval Augmented Generation) Framework for building modular, open source applications for production by TrueFoundry ",
+        "stars": 4330,
+        "language": "Python",
+        "url": "https://github.com/truefoundry/cognita"
+    },
+    {
+        "name": "ChatRTX",
+        "description": "A developer reference project for creating Retrieval Augmented Generation (RAG) chatbots on Windows using TensorRT-LLM",
+        "stars": 3111,
+        "language": "Python",
+        "url": "https://github.com/NVIDIA/ChatRTX"
+    }
+]
